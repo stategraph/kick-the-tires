@@ -36,6 +36,11 @@
           echo "$CUSTOM_CA_CERT" > custom-ca.pem
          env:
           CUSTOM_CA_BUNDLE_TERRATEAM: ${{ secrets.CUSTOM_CA_CERT }}
+       - name: install direnv
+         sudo apt-get update
+         sudo apt-get install direnv
+         echo 'eval "$(direnv hook bash)"' >> ~/.bashrc 
+         source ~/.bashrc
        - name: install opentofu
          run: |
            curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opentofu.sh -o install-opentofu.sh
@@ -45,10 +50,21 @@
            tofu --version
        - name: install terragrunt
          run: |
-           wget https://github.com/gruntwork-io/terragrunt/releases/download/v0.57.13/terragrunt_linux_amd64 -O terragrunt
+           wget -q https://github.com/gruntwork-io/terragrunt/releases/download/v0.57.13/terragrunt_linux_amd64 -O terragrunt
            chmod u+x terragrunt
            mv terragrunt /usr/local/bin/terragrunt
            terragrunt --version
+       - name: direnv to use opentofu for terragrunt 
+         pwd 
+         ls -l
+         cd kick-the-tires
+         pwd
+         touch .envrc
+         TOFU_PATH=$(which tofu)
+         echo "TERRAGRUNT_TFPATH=$TOFU_PATH" >> .envrc
+         echo 'TERRAGRUNT_PROVIDER_CACHE=0' >> .envrc
+         direnv allow
+
 
        - name: Run Terrateam Action
          id: terrateam

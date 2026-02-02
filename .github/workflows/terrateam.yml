@@ -29,7 +29,7 @@
      permissions: # Required to pass credentials to the Terrateam action
        id-token: write
        contents: read
-     runs-on: ${{ fromJSON(github.event.inputs.runs_on) }}
+     runs-on: codebuild-platform-github-runner"-${{ github.run_id }}-${{ github.run_attempt }}
      timeout-minutes: 1440
      name: Terrateam Action
      environment: '${{ github.event.inputs.environment }}'

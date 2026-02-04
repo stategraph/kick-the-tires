@@ -19,7 +19,7 @@ Try Terrateam in 5 minutes without any cloud credentials. This demo uses null re
 3. [Install the Terrateam GitHub App](https://github.com/apps/terrateam-action) on your account/organization
 
 4. **Try it out**
-   - Edit `dev/main.tf` - change `count = 0` to `count = 1`
+   - Edit `dev/main.tf` - change `null_resource_count = 0` to `null_resource_count = 1`
    - Create a new branch and push your changes
    - Open a pull request
    - Watch Terrateam automatically comment with the terraform plan!

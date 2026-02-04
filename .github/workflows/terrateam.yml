@@ -11,7 +11,7 @@
  on:
    workflow_dispatch:
      inputs:
-       # The work-token and api-base-url are automatically passed in by the Terrateam server
+       # The work-token and api-base-url are automatically passed in by the Terrateam backend
        work-token:
          description: 'Work Token'
          required: true
@@ -20,12 +20,16 @@
        environment:
          description: 'Environment in which to run the action'
          type: environment
+       runs_on:
+         description: 'runs-on configuration'
+         type: string
+         default: '"ubuntu-latest"'
  jobs:
    terrateam:
      permissions: # Required to pass credentials to the Terrateam action
        id-token: write
        contents: read
-     runs-on: ubuntu-latest
+     runs-on: ${{ fromJSON(github.event.inputs.runs_on) }}
      timeout-minutes: 1440
      name: Terrateam Action
      environment: '${{ github.event.inputs.environment }}'

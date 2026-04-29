@@ -1,0 +1,65 @@
+# Terrateam Configuration
+# 
+# This configuration enables: Cost Estimation, Drift Detection, Auto-merge, Apply After Merge, Apply Requirements, Role-Based Access Control, Layered Runs, OPA Policy Checks
+# while using default behavior for repository structure and authentication.
+# Note: Apply After Merge enables autoapply globally. For directory-specific
+# settings, use the 'dirs' configuration: https://docs.terrateam.io/configuration-reference/dirs/
+
+
+apply_requirements:
+  checks:
+    - tag_query: ""
+      approved:
+        enabled: true
+        any_of_count: 1
+      merge_conflicts:
+        enabled: true
+      status_checks:
+        enabled: true
+cost_estimation:
+  enabled: true
+drift:
+  enabled: true
+  schedules:
+    default:
+      tag_query: ""
+      schedule: daily
+automerge:
+  enabled: true
+when_modified:
+  autoapply: true
+access_control:
+  enabled: true
+  policies:
+    - tag_query: ""
+      plan:
+        - "*"
+      apply:
+        - team:sre
+dirs:
+  network:
+    when_modified:
+      file_patterns:
+        - ${DIR}/*.tf
+  database:
+    when_modified:
+      depends_on: dir:network
+      file_patterns:
+        - ${DIR}/*.tf
+  application:
+    when_modified:
+      depends_on: dir:database
+      file_patterns:
+        - ${DIR}/*.tf
+workflows:
+  - tag_query: ""
+    plan:
+      - type: init
+      - type: plan
+      - type: conftest
+        extra_args:
+          - "--policy"
+          - policies/
+    apply:
+      - type: init
+      - type: apply

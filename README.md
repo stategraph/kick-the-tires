@@ -16,7 +16,7 @@ Try Stategraph in 5 minutes without any cloud credentials. This demo uses null r
    
    ![Enable GitHub Actions workflows](./images/enable-workflows.png)
 
-3. [Install the Stategraph GitHub App](https://github.com/apps/terrateam-action) on your account/organization
+3. [Install the Stategraph GitHub App](https://github.com/apps/stategraph) on your account/organization
 
 4. **Try it out**
    - Edit `dev/main.tf` - change `null_resource_count = 0` to `null_resource_count = 1`
